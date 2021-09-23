@@ -1,0 +1,10 @@
+standard = 365
+leap = 366
+
+normalQuad = 3*standard + leap = 1461
+shortQuad = 4*standard = 1460
+
+normalCentury = 24*normalQuad + shortQuad = 36524
+longCentury = 25*normalQuad = 36525
+
+quadCentury = 3*normalCentury + longCentury = 146097
