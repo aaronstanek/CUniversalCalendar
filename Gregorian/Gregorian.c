@@ -7,17 +7,17 @@ int GregorianLeapYear(long year) {
     // year is zero-adjusted
     // year = 0 corresponds to 1 BCE
     // year = -1 corresponds to 2 BCE
-    if (modulus(year,4)) {
+    if ( year % 4 ) {
         // not divisible by 4
         // can't be a leap year
         return 0;
     }
-    else if (modulus(year,100)) {
+    else if ( year % 100 ) {
         // divisible by 4, but not by 100,
         // it's a leap year
         return 1;
     }
-    else if (modulus(year,400)) {
+    else if ( year % 400 ) {
         // divisible by 100, but not 400,
         // it's not a leap year
         return 0;
