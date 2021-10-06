@@ -4,9 +4,9 @@
 #include "../common/ErrorCodes.h"
 
 int GregorianLeapYear(long year) {
-    if (year < 0) {
-        ++year;
-    }
+    // year is zero-adjusted
+    // year = 0 corresponds to 1 BCE
+    // year = -1 corresponds to 2 BCE
     if (modulus(year,4)) {
         // not divisible by 4
         // can't be a leap year
