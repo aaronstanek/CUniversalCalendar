@@ -1,8 +1,6 @@
 #ifndef __COMMON_FUNCTIONS_H__
 #define __COMMON_FUNCTIONS_H__
 
-#include "Division.h"
-
 inline long modulus(long a, const long b) {
     // C defines a % b as a - (a/b)*b.
     // this works fine for nonnegative values
@@ -10,15 +8,15 @@ inline long modulus(long a, const long b) {
     // when a is negative.
     // let a be anything, let b be greater than zero.
 
-    #ifdef DIVISION_ROUNDS_DOWN
+    #if (-1) / 5 == -1
+    // division rounds down
     // this case is easy.
     // (a/b)*b will give the largest multiple
     // of b less than or equal to a.
     // so % always returns the modulus.
     return a % b;
-    #endif
-
-    #ifdef DIVISON_ROUNDS_ZERO
+    #else
+    // division rounds to zero
     // this case is a bit harder.
     // for nonnegative a, this works
     // identically to the case above.
