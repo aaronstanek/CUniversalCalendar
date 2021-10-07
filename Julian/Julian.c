@@ -60,3 +60,72 @@ int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* c
     output->day = day + 1;
     return NO_ERROR;
 }
+
+int JulianDecode(const struct CalendarCache* const restrict cache, long* output, const struct YMD* const restrict ymd) {
+    // year zero is an issue
+    if (ymd->year == 0 || ymd->month < 1 || ymd->month > 12) {
+        return ERROR_VALIDATION;
+    }
+    // year and month numbers are valid
+    long year = (ymd->year > 0) ? (ymd->year) : (ymd->year + 1);
+    // year is a zero-adjusted year number
+    if (year < -5879488 || year > 5879488) {
+        return ERROR_BOUNDS;
+        // -2147482992 is the smallest multiple of 1461 which
+        // can fit in 32 bits
+        // (-2147482992) / 1461 * 4 = -5879488
+        // (2^31) - (1469872*1461) - 366 = 290
+        // in 32 bits, we can fit 1469872 cycles of 4 years
+        // 1469872*4+1 = 5879488
+        // plus we can go to the end of that year
+    }
+    // we now know that the resulting udn will fit in
+    // the signed 32-bit output
+    long udn;
+    // udn will be updated to hold the correct
+    // universal date number
+    {
+        const int isLeapYear = (year % 4) ? 0 : 1;
+        // we already checked the month number
+        const int month = ymd->month - 1;
+        const unsigned char* const monthLengths = isLeapYear ? &(cache->jgMonth.lengthLeap[0]) : &(cache->jgMonth.length[0]);
+        if (ymd->day < 1 || ymd->day > monthLengths[month]) {
+            return ERROR_VALIDATION;
+        }
+        // the day number is valid
+        const unsigned short* const monthOffsets = isLeapYear ? &(cache->jgMonth.totalLeap[0]) : &(cache->jgMonth.total[0]);
+        udn = monthOffsets[month] + (ymd->day - 1);
+    }
+    // udn is the number of days from the start of the year
+    {
+        const long yearInPeriod = modulus(year,4);
+        // yearInPeriod is the number of years
+        // since the start of the 4-year-period
+        udn += ((year - yearInPeriod) / 4) * 1461;
+        // (year - yearInPeriod) is the first year of the
+        // 4-year-period, it is also divisible by 4
+        // there are 1461 days in each 4-year-period
+        year = yearInPeriod;
+    }
+    // udn is now the number of days from Julian Date 0
+    // to the start of the 4-year-period
+    // plus the number of days from the start of the year
+    // to the current day
+    // it is missing the number of days betweent the start of the
+    // 4-year-period and the start of the year
+    // year is now [0-3]
+    if (year) {
+        // year is 1,2, or 3
+        --year;
+        udn += 366;
+        // first year is 366 days
+        // year is 0,1, or 2
+        udn += 365 * year;
+    }
+    // if year was 0
+    // then the number of days from the start of the period
+    // to the start of the year is 0
+    // need to still convert from Julain Date to Universal Date
+    *output = udn - 2;
+    return NO_ERROR;
+}
