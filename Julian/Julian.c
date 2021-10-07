@@ -81,9 +81,9 @@ int JulianDecode(const struct CalendarCache* const restrict cache, long* output,
     }
     // we now know that the resulting udn will fit in
     // the signed 32-bit output
-    long udn;
+    long jdn;
     // udn will be updated to hold the correct
-    // universal date number
+    // Julian Date Number
     {
         const int isLeapYear = (year % 4) ? 0 : 1;
         // we already checked the month number
@@ -94,14 +94,14 @@ int JulianDecode(const struct CalendarCache* const restrict cache, long* output,
         }
         // the day number is valid
         const unsigned short* const monthOffsets = isLeapYear ? &(cache->jgMonth.totalLeap[0]) : &(cache->jgMonth.total[0]);
-        udn = monthOffsets[month] + (ymd->day - 1);
+        jdn = monthOffsets[month] + (ymd->day - 1);
     }
     // udn is the number of days from the start of the year
     {
         const long yearInPeriod = modulus(year,4);
         // yearInPeriod is the number of years
         // since the start of the 4-year-period
-        udn += ((year - yearInPeriod) / 4) * 1461;
+        jdn += ((year - yearInPeriod) / 4) * 1461;
         // (year - yearInPeriod) is the first year of the
         // 4-year-period, it is also divisible by 4
         // there are 1461 days in each 4-year-period
@@ -117,15 +117,15 @@ int JulianDecode(const struct CalendarCache* const restrict cache, long* output,
     if (year) {
         // year is 1,2, or 3
         --year;
-        udn += 366;
+        jdn += 366;
         // first year is 366 days
         // year is 0,1, or 2
-        udn += 365 * year;
+        jdn += 365 * year;
     }
     // if year was 0
     // then the number of days from the start of the period
     // to the start of the year is 0
     // need to still convert from Julain Date to Universal Date
-    *output = udn - 2;
+    *output = jdn - 2;
     return NO_ERROR;
 }
