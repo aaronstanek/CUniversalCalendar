@@ -280,18 +280,3 @@ int GregorianDecode(const struct CalendarCache* const restrict cache, long* outp
     *output = udn;
     return NO_ERROR;
 }
-
-int GregorianShift(const struct CalendarCache* const restrict cache, struct YMD* const output, const struct YMD* const ymd, const long shiftValue) {
-    long udn;
-    int errorCode = GregorianDecode(cache,&udn,ymd);
-    if (errorCode) {
-        return errorCode;
-    }
-    errorCode = checkForOverflow(udn,shiftValue);
-    if (errorCode) {
-        return errorCode;
-    }
-    // shiftValue will not cause an over/under flow
-    udn += shiftValue;
-    return GregorianEncode(cache,output,udn);
-}

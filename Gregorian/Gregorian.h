@@ -8,6 +8,4 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
 
 int GregorianDecode(const struct CalendarCache* const restrict cache, long* output, const struct YMD* const restrict ymd);
 
-int GregorianShift(const struct CalendarCache* const restrict cache, struct YMD* const output, const struct YMD* const ymd, const long shiftValue);
-
 #endif
