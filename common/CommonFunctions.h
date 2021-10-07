@@ -31,8 +31,6 @@ inline long modulus(long a, const long b) {
     #endif
 }
 
-int checkForOverflow(const long a, const long b);
-
 unsigned long searchSumArrayLong(const unsigned long* const restrict array, unsigned long highestIndex, const unsigned long target);
 
 unsigned long searchSumArrayShort(const unsigned short* const restrict array, unsigned long highestIndex, const unsigned short target);
