@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-inline int_least32_t modulus(int_least32_t a, const int_least32_t b) {
+inline int_fast32_t modulus(int_fast32_t a, const int_fast32_t b) {
     // C defines a % b as a - (a/b)*b.
     // this works fine for nonnegative values
     // but has implementaion-defined behavior
@@ -33,8 +33,8 @@ inline int_least32_t modulus(int_least32_t a, const int_least32_t b) {
     #endif
 }
 
-uint_least32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_least32_t highestIndex, const uint_least32_t target);
+uint_fast32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast32_t target);
 
-uint_least32_t searchSumArrayShort(const uint_least16_t* const restrict array, uint_least32_t highestIndex, const uint_least16_t target);
+uint_fast32_t searchSumArrayShort(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast16_t target);
 
 #endif

@@ -1,10 +1,10 @@
 #include "CommonFunctions.h"
 #include "ErrorCodes.h"
 
-uint_least32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_least32_t highestIndex, const uint_least32_t target) {
-    uint_least32_t lowestIndex = 0;
+uint_fast32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast32_t target) {
+    uint_fast32_t lowestIndex = 0;
     do {
-        const uint_least32_t middleIndex = (lowestIndex + highestIndex) / 2;
+        const uint_fast32_t middleIndex = (lowestIndex + highestIndex) / 2;
         if (target >= array[middleIndex]) {
             lowestIndex = middleIndex;
         }
@@ -15,10 +15,10 @@ uint_least32_t searchSumArrayLong(const uint_least32_t* const restrict array, ui
     return (target >= array[highestIndex]) ? highestIndex : lowestIndex;
 }
 
-uint_least32_t searchSumArrayShort(const uint_least16_t* const restrict array, uint_least32_t highestIndex, const uint_least16_t target) {
-    uint_least32_t lowestIndex = 0;
+uint_fast32_t searchSumArrayShort(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast16_t target) {
+    uint_fast32_t lowestIndex = 0;
     do {
-        const uint_least32_t middleIndex = (lowestIndex + highestIndex) / 2;
+        const uint_fast32_t middleIndex = (lowestIndex + highestIndex) / 2;
         if (target >= array[middleIndex]) {
             lowestIndex = middleIndex;
         }
