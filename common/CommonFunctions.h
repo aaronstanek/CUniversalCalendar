@@ -1,7 +1,9 @@
 #ifndef __COMMON_FUNCTIONS_H__
 #define __COMMON_FUNCTIONS_H__
 
-inline long modulus(long a, const long b) {
+#include <stdint.h>
+
+inline int_least32_t modulus(int_least32_t a, const int_least32_t b) {
     // C defines a % b as a - (a/b)*b.
     // this works fine for nonnegative values
     // but has implementaion-defined behavior
@@ -31,8 +33,8 @@ inline long modulus(long a, const long b) {
     #endif
 }
 
-unsigned long searchSumArrayLong(const unsigned long* const restrict array, unsigned long highestIndex, const unsigned long target);
+uint_least32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_least32_t highestIndex, const uint_least32_t target);
 
-unsigned long searchSumArrayShort(const unsigned short* const restrict array, unsigned long highestIndex, const unsigned short target);
+uint_least32_t searchSumArrayShort(const uint_least16_t* const restrict array, uint_least32_t highestIndex, const uint_least16_t target);
 
 #endif
