@@ -21,7 +21,7 @@ void JulianGregorianMonthCache__constructor(struct JulianGregorianMonthCache* co
     // only February is different between a
     // standard year and a leap year
     // February is month 1
-    memcpy( &(cache->lengthLeap[0]) , &(cache->length[0]) , 12*sizeof(unsigned char) );
+    memcpy( &(cache->lengthLeap[0]) , &(cache->length[0]) , 12*sizeof(uint_least8_t) );
     cache->lengthLeap[1] = 29;
 
     // day offsets in a standard year
@@ -33,7 +33,7 @@ void JulianGregorianMonthCache__constructor(struct JulianGregorianMonthCache* co
     // day offsets in a leap year
     // January and February are the same as
     // in a standard year
-    memcpy( &(cache->totalLeap[0]) , &(cache->total[0]) , 2*sizeof(unsigned short) );
+    memcpy( &(cache->totalLeap[0]) , &(cache->total[0]) , 2*sizeof(uint_least16_t) );
     // all other months are one greater
     // than their standard counterparts
     for (int i = 2; i < 12; ++i) {
