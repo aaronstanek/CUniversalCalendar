@@ -3,7 +3,7 @@
 #include "../common/CommonFunctions.h"
 #include "../common/ErrorCodes.h"
 
-int GregorianLeapYear(const long year) {
+int GregorianLeapYear(const int_fast32_t year) {
     // year is zero-adjusted
     // year = 0 corresponds to 1 BCE
     // year = -1 corresponds to 2 BCE
@@ -29,7 +29,7 @@ int GregorianLeapYear(const long year) {
     }
 }
 
-int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const long udn) {
+int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn) {
     if (udn < -2147479803) {
         // -2147479803 = 146097 * (-14699)
         // the smallest negative multiple
@@ -37,7 +37,7 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
         return ERROR_BOUNDS;
     }
 
-    long n; // temp variable
+    int_fast32_t n; // temp variable
     int isStandard; // temp variable
 
     n = modulus(udn,146097);
@@ -46,7 +46,7 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
     // 0 <= n < 146097
     // 146097 is the number of days in a quadCentury
 
-    long year = ((udn - n) / 146097) * 400;
+    int_fast32_t year = ((udn - n) / 146097) * 400;
     // udn - n is a multiple of 146097
     // the variable "year", doesn't actually tell us the exact year.
     // instead it tells us the first year of the quadCentury
@@ -67,7 +67,7 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
         n -= 36525;
         // we have now moved to the first day of the
         // 2nd century
-        const long centuries = n / 36524;
+        const int_fast32_t centuries = n / 36524;
         year += 100 * centuries;
         n -= 36524 * centuries;
         // we are now at the start of the current
@@ -98,7 +98,7 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
         // count how many 4-year periods since the
         // most recent reference point
         // 1461 days in each 4-year period
-        const long fourYearPeriods = n / 1461;
+        const int_fast32_t fourYearPeriods = n / 1461;
         year += 4 * fourYearPeriods;
         n -= 1461 * fourYearPeriods;
         // year is the most recent leap year
@@ -130,11 +130,11 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
     // multiple years, none of which are leap years
     // isStandard = 0 means that we are at the start of a leap year
 
-    const unsigned short* monthOffsetArray;
+    const uint_least16_t* monthOffsetArray;
     if (isStandard) {
         // we have only short years here
         // each year has 365 days
-        const long years = n / 365;
+        const int_fast32_t years = n / 365;
         year += years;
         n -= 365 * years;
         // we are at the start of a standard year
@@ -157,13 +157,13 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
     return NO_ERROR;
 }
 
-int GregorianDecode(const struct CalendarCache* const restrict cache, long* output, const struct YMD* const restrict ymd) {
+int GregorianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd) {
     // year zero is an issue
     if (ymd->year == 0 || ymd->month < 1 || ymd->month > 12) {
         return ERROR_VALIDATION;
     }
     // year and month numbers are valid
-    long year = (ymd->year > 0) ? (ymd->year) : (ymd->year + 1);
+    int_fast32_t year = (ymd->year > 0) ? (ymd->year) : (ymd->year + 1);
     // year is a zero-adjusted year number
     if (year < -5879600 || year > 5879609) {
         return ERROR_BOUNDS;
@@ -182,24 +182,24 @@ int GregorianDecode(const struct CalendarCache* const restrict cache, long* outp
     }
     // we now know that the resulting udn will fit in
     // the signed 32-bit output
-    long udn;
+    int_fast32_t udn;
     // udn will be updated to hold the correct
     // universal date number
     {
         const int isLeapYear = GregorianLeapYear(year);
         // we already checked the month number
         const int month = ymd->month - 1;
-        const unsigned char* const monthLengths = isLeapYear ? &(cache->jgMonth.lengthLeap[0]) : &(cache->jgMonth.length[0]);
+        const uint_least8_t* const monthLengths = isLeapYear ? &(cache->jgMonth.lengthLeap[0]) : &(cache->jgMonth.length[0]);
         if (ymd->day < 1 || ymd->day > monthLengths[month]) {
             return ERROR_VALIDATION;
         }
         // the day number is valid
-        const unsigned short* const monthOffsets = isLeapYear ? &(cache->jgMonth.totalLeap[0]) : &(cache->jgMonth.total[0]);
+        const uint_least16_t* const monthOffsets = isLeapYear ? &(cache->jgMonth.totalLeap[0]) : &(cache->jgMonth.total[0]);
         udn = monthOffsets[month] + (ymd->day - 1);
     }
     // udn holds the number of days since the start of the year
     {
-        const long yearInQuadCentury = modulus(year,400);
+        const int_fast32_t yearInQuadCentury = modulus(year,400);
         udn += ((year - yearInQuadCentury) / 400 ) * 146097;
         // year - yearInQuadCentury is the first year
         // of the quadcentury (multiple of 400)
@@ -224,7 +224,7 @@ int GregorianDecode(const struct CalendarCache* const restrict cache, long* outp
         year -= 100;
         udn += 36525; // number of days in a long century
         // year is [0-300)
-        const long centuries = year / 100;
+        const int_fast32_t centuries = year / 100;
         year -= 100 * centuries;
         udn += 36524 * centuries;
     }
@@ -258,7 +258,7 @@ int GregorianDecode(const struct CalendarCache* const restrict cache, long* outp
     // and all the years divisible by 4
     // are leap years
     if (isStandard) {
-        const long fourYearPeriods = year / 4;
+        const int_fast32_t fourYearPeriods = year / 4;
         year -= 4 * fourYearPeriods;
         udn += 1461 * fourYearPeriods;
         // year < 4
