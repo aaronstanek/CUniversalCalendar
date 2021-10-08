@@ -2,11 +2,11 @@
 
 #include "../common/CommonFunctions.h"
 
-const char* dayOfWeekString(const struct CalendarCache* const restrict cache, const int_least32_t udn) {
+const char* dayOfWeekString(const struct CalendarCache* const restrict cache, const int_fast32_t udn) {
     return cache->dow.names[ modulus(udn,7) ];
 }
 
-int dayOfWeekISO(const int_least32_t udn) {
+int dayOfWeekISO(const int_fast32_t udn) {
     const int mod = modulus(udn,7);
     // this puts Saturday at 0 and Friday at 6
     // we want Monday at 1 and Sunday at 7
