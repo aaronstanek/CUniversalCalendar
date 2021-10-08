@@ -3,7 +3,7 @@
 #include "../common/CommonFunctions.h"
 #include "../common/ErrorCodes.h"
 
-int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const long udn) {
+int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn) {
     if (udn > 2147483645 || udn < -2147482994) {
         return ERROR_BOUNDS;
         // we need to be able to add 2 to get the Julian Date
@@ -15,11 +15,11 @@ int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* c
         // but we will add 2 before this value, so the actual limit
         // is -2147482994
     }
-    long n = udn + 2;
+    int_fast32_t n = udn + 2;
     // n is the Julian Date Number
-    long year;
+    int_fast32_t year;
     {
-        const long nStar = modulus(n,1461);
+        const int_fast32_t nStar = modulus(n,1461);
         // nStar is how many days since
         // the start of the current 4-year-period
         year = 4 * ( (n-nStar) / 1461 );
@@ -31,14 +31,14 @@ int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* c
     // year is now the starting year of the current
     // 4-year period
     // n is the number of days since the start of that period
-    const unsigned short* monthOffsetArray;
+    const uint_least16_t* monthOffsetArray;
     if (n >= 366) {
         // we are in the 2nd, 3rd, or 4th year
         // of the four-year period
         // the first year has 366 days
         ++year;
         n -= 366;
-        const long years = n / 365;
+        const int_fast32_t years = n / 365;
         // years is 0, 1, or 2
         year += years;
         n -= 365 * years;
@@ -61,13 +61,13 @@ int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* c
     return NO_ERROR;
 }
 
-int JulianDecode(const struct CalendarCache* const restrict cache, long* output, const struct YMD* const restrict ymd) {
+int JulianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd) {
     // year zero is an issue
     if (ymd->year == 0 || ymd->month < 1 || ymd->month > 12) {
         return ERROR_VALIDATION;
     }
     // year and month numbers are valid
-    long year = (ymd->year > 0) ? (ymd->year) : (ymd->year + 1);
+    int_fast32_t year = (ymd->year > 0) ? (ymd->year) : (ymd->year + 1);
     // year is a zero-adjusted year number
     if (year < -5879488 || year > 5879488) {
         return ERROR_BOUNDS;
@@ -81,24 +81,24 @@ int JulianDecode(const struct CalendarCache* const restrict cache, long* output,
     }
     // we now know that the resulting udn will fit in
     // the signed 32-bit output
-    long jdn;
+    int_fast32_t jdn;
     // udn will be updated to hold the correct
     // Julian Date Number
     {
         const int isLeapYear = (year % 4) ? 0 : 1;
         // we already checked the month number
         const int month = ymd->month - 1;
-        const unsigned char* const monthLengths = isLeapYear ? &(cache->jgMonth.lengthLeap[0]) : &(cache->jgMonth.length[0]);
+        const uint_least8_t* const monthLengths = isLeapYear ? &(cache->jgMonth.lengthLeap[0]) : &(cache->jgMonth.length[0]);
         if (ymd->day < 1 || ymd->day > monthLengths[month]) {
             return ERROR_VALIDATION;
         }
         // the day number is valid
-        const unsigned short* const monthOffsets = isLeapYear ? &(cache->jgMonth.totalLeap[0]) : &(cache->jgMonth.total[0]);
+        const uint_least16_t* const monthOffsets = isLeapYear ? &(cache->jgMonth.totalLeap[0]) : &(cache->jgMonth.total[0]);
         jdn = monthOffsets[month] + (ymd->day - 1);
     }
     // udn is the number of days from the start of the year
     {
-        const long yearInPeriod = modulus(year,4);
+        const int_fast32_t yearInPeriod = modulus(year,4);
         // yearInPeriod is the number of years
         // since the start of the 4-year-period
         jdn += ((year - yearInPeriod) / 4) * 1461;
