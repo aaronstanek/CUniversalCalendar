@@ -3,7 +3,7 @@
 #include "../common/CommonFunctions.h"
 #include "../common/ErrorCodes.h"
 
-int GregorianLeapYear(const int_fast32_t year) {
+inline int GregorianLeapYear(const int_fast32_t year) {
     // year is zero-adjusted
     // year = 0 corresponds to 1 BCE
     // year = -1 corresponds to 2 BCE
