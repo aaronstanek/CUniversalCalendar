@@ -1,6 +1,8 @@
 #ifndef __COMMON_FUNCTIONS_H__
 #define __COMMON_FUNCTIONS_H__
 
+#include "ErrorType.h"
+
 #include <stdint.h>
 
 inline int_fast32_t modulus(int_fast32_t a, const int_fast32_t b) {
@@ -41,7 +43,7 @@ struct IntToString {
     char letters[12];
 };
 
-int IntToString__constructor(struct IntToString* const restrict output, int_fast32_t n);
+UniversalCalendarErrorCode IntToString__constructor(struct IntToString* const restrict output, int_fast32_t n);
 
 struct DynamicCharArray {
     char* data;
@@ -49,10 +51,10 @@ struct DynamicCharArray {
     int logicalSize;
 };
 
-int DynamicCharArray__constructor(struct DynamicCharArray* const restrict a);
+UniversalCalendarErrorCode DynamicCharArray__constructor(struct DynamicCharArray* const restrict a);
 
-int DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char c);
+UniversalCalendarErrorCode DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char c);
 
-int DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c);
+UniversalCalendarErrorCode DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c);
 
 #endif

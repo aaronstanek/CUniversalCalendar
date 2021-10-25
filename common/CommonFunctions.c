@@ -33,7 +33,7 @@ uint_fast32_t searchSumArrayShort(const uint_least16_t* const restrict array, ui
     return (target >= array[highestIndex]) ? highestIndex : lowestIndex;
 }
 
-int IntToString__constructor(struct IntToString* const restrict output, int_fast32_t n) {
+UniversalCalendarErrorCode IntToString__constructor(struct IntToString* const restrict output, int_fast32_t n) {
     if (n > 2147483647 || n < -2147483647) {
         return ERROR_BOUNDS;
     }
@@ -87,7 +87,7 @@ int IntToString__constructor(struct IntToString* const restrict output, int_fast
     }
 }
 
-int DynamicCharArray__constructor(struct DynamicCharArray* const restrict a) {
+UniversalCalendarErrorCode DynamicCharArray__constructor(struct DynamicCharArray* const restrict a) {
     a->data = malloc(32);
     if (a->data) {
         a->allocatedSize = 32;
@@ -99,7 +99,7 @@ int DynamicCharArray__constructor(struct DynamicCharArray* const restrict a) {
     }
 }
 
-int DynamicCharArray__grow(struct DynamicCharArray* const restrict a) {
+UniversalCalendarErrorCode DynamicCharArray__grow(struct DynamicCharArray* const restrict a) {
     if (a->allocatedSize > INT_MAX-(a->allocatedSize)) {
         return ERROR_MEMORY;
     }
@@ -115,9 +115,9 @@ int DynamicCharArray__grow(struct DynamicCharArray* const restrict a) {
     }
 }
 
-int DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char c) {
+UniversalCalendarErrorCode DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char c) {
     if (a->logicalSize == a->allocatedSize) {
-        const int e = DynamicCharArray__grow(a);
+        const UniversalCalendarErrorCode e = DynamicCharArray__grow(a);
         if (e) return e;
     }
     // there is enough space to save another char
@@ -126,12 +126,12 @@ int DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char
     return NO_ERROR;
 }
 
-int DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c) {
+UniversalCalendarErrorCode DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c) {
     // c must be a null-terminated array
     for (int i = 0; 1; ++i) {
         const char elem = c[i];
         if (elem) {
-            const int e = DynamicCharArray__push(a,elem);
+            const UniversalCalendarErrorCode e = DynamicCharArray__push(a,elem);
             if (e) return e;
         }
         else {
