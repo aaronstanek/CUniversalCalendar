@@ -3,7 +3,7 @@
 #include "../common/CommonFunctions.h"
 #include "../common/ErrorCodes.h"
 
-int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn) {
+UniversalCalendarErrorCode JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn) {
     if (udn > 2147483645 || udn < -2147482994) {
         return ERROR_BOUNDS;
         // we need to be able to add 2 to get the Julian Date
@@ -61,7 +61,7 @@ int JulianEncode(const struct CalendarCache* const restrict cache, struct YMD* c
     return NO_ERROR;
 }
 
-int JulianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd) {
+UniversalCalendarErrorCode JulianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd) {
     // year zero is an issue
     if (ymd->year == 0 || ymd->month < 1 || ymd->month > 12) {
         return ERROR_VALIDATION;
