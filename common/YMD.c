@@ -41,6 +41,11 @@ UniversalCalendarErrorCode YMD__toString(const struct YMD* const restrict ymd, c
         free(string.data);
         return e;
     }
+    e = DynamicCharArray__push(&string,0);
+    if (e) {
+        free(string.data);
+        return e;
+    }
     // the string should be fully constructed at this point
     // we can return it, the responsibility to destruct
     // is passed to the caller
