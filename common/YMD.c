@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 
-UniversalCalendarErrorCode YMD__toString(struct YMD* const restrict ymd, char** const restrict output, const char* const restrict prefix) {
+UniversalCalendarErrorCode YMD__toString(const struct YMD* const restrict ymd, char** const restrict output, const char* const restrict prefix) {
     struct DynamicCharArray string;
     UniversalCalendarErrorCode e;
     e = DynamicCharArray__constructor(&string);

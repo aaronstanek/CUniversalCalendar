@@ -11,6 +11,6 @@ struct YMD {
     uint_least8_t day;
 };
 
-UniversalCalendarErrorCode YMD__toString(struct YMD* const restrict ymd, char** const restrict output, const char* const restrict prefix);
+UniversalCalendarErrorCode YMD__toString(const struct YMD* const restrict ymd, char** const restrict output, const char* const restrict prefix);
 
 #endif
