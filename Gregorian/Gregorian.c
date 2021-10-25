@@ -280,3 +280,7 @@ UniversalCalendarErrorCode GregorianDecode(const struct CalendarCache* const res
     *output = udn;
     return NO_ERROR;
 }
+
+UniversalCalendarErrorCode GregorianToString(const struct YMD* const restrict ymd, char** const restrict output) {
+    return YMD__toString(ymd,output,"GregorianDate");
+}

@@ -9,4 +9,6 @@ UniversalCalendarErrorCode GregorianEncode(const struct CalendarCache* const res
 
 UniversalCalendarErrorCode GregorianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd);
 
+UniversalCalendarErrorCode GregorianToString(const struct YMD* const restrict ymd, char** const restrict output);
+
 #endif

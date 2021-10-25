@@ -9,4 +9,6 @@ UniversalCalendarErrorCode JulianEncode(const struct CalendarCache* const restri
 
 UniversalCalendarErrorCode JulianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd);
 
+UniversalCalendarErrorCode JulianToString(const struct YMD* const restrict ymd, char** const restrict output);
+
 #endif

@@ -129,3 +129,7 @@ UniversalCalendarErrorCode JulianDecode(const struct CalendarCache* const restri
     *output = jdn - 2;
     return NO_ERROR;
 }
+
+UniversalCalendarErrorCode JulianToString(const struct YMD* const restrict ymd, char** const restrict output) {
+    return YMD__toString(ymd,output,"JulianDate");
+}
