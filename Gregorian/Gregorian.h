@@ -3,9 +3,10 @@
 
 #include "../common/CalendarCache.h"
 #include "../common/YMD.h"
+#include "../common/ErrorType.h"
 
-int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn);
+UniversalCalendarErrorCode GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn);
 
-int GregorianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd);
+UniversalCalendarErrorCode GregorianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd);
 
 #endif

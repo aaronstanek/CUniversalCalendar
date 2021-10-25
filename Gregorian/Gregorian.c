@@ -29,7 +29,7 @@ inline int GregorianLeapYear(const int_fast32_t year) {
     }
 }
 
-int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn) {
+UniversalCalendarErrorCode GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD* const restrict output, const int_fast32_t udn) {
     if (udn < -2147479803) {
         // -2147479803 = 146097 * (-14699)
         // the smallest negative multiple
@@ -157,7 +157,7 @@ int GregorianEncode(const struct CalendarCache* const restrict cache, struct YMD
     return NO_ERROR;
 }
 
-int GregorianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd) {
+UniversalCalendarErrorCode GregorianDecode(const struct CalendarCache* const restrict cache, int_fast32_t* output, const struct YMD* const restrict ymd) {
     // year zero is an issue
     if (ymd->year == 0 || ymd->month < 1 || ymd->month > 12) {
         return ERROR_VALIDATION;
