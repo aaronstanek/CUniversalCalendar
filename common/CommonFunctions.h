@@ -37,4 +37,22 @@ uint_fast32_t searchSumArrayLong(const uint_least32_t* const restrict array, uin
 
 uint_fast32_t searchSumArrayShort(const uint_least16_t* const restrict array, uint_fast32_t highestIndex, const uint_fast16_t target);
 
+struct IntToString {
+    char letters[12];
+};
+
+int IntToString__constructor(struct IntToString* const restrict output, int_fast32_t n);
+
+struct DynamicCharArray {
+    char* data;
+    int allocatedSize;
+    int logicalSize;
+};
+
+int DynamicCharArray__constructor(struct DynamicCharArray* const restrict a);
+
+int DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char c);
+
+int DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c);
+
 #endif
