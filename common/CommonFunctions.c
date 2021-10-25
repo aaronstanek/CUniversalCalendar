@@ -139,3 +139,20 @@ UniversalCalendarErrorCode DynamicCharArray__pushArray(struct DynamicCharArray* 
         }
     }
 }
+
+UniversalCalendarErrorCode DynamicCharArray__pushInteger(struct DynamicCharArray* const restrict a, const int_fast32_t number) {
+    struct IntToString intAsString;
+    {
+        const UniversalCalendarErrorCode e = IntToString__constructor(&intAsString,number);
+        if (e) return e;
+    }
+    return DynamicCharArray__pushArray(a,&(intAsString.letters[0]));
+}
+
+UniversalCalendarErrorCode DynamicCharArray__pushIntegerChar(struct DynamicCharArray* const restrict a, const int_fast32_t number, const char c) {
+    {
+        const UniversalCalendarErrorCode e = DynamicCharArray__pushInteger(a,number);
+        if (e) return e;
+    }
+    return DynamicCharArray__push(a,c);
+}

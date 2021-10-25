@@ -57,4 +57,8 @@ UniversalCalendarErrorCode DynamicCharArray__push(struct DynamicCharArray* const
 
 UniversalCalendarErrorCode DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c);
 
+UniversalCalendarErrorCode DynamicCharArray__pushInteger(struct DynamicCharArray* const restrict a, const int_fast32_t number);
+
+UniversalCalendarErrorCode DynamicCharArray__pushIntegerChar(struct DynamicCharArray* const restrict a, const int_fast32_t number, const char c);
+
 #endif
