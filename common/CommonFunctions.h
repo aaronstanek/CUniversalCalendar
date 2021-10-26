@@ -36,9 +36,9 @@ inline int_fast32_t modulus(int_fast32_t a, const int_fast32_t b) {
     #endif
 }
 
-uint_fast32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast32_t target);
+uint_fast32_t searchSumArray32(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast32_t target);
 
-uint_fast32_t searchSumArrayShort(const uint_least16_t* const restrict array, uint_fast32_t highestIndex, const uint_fast16_t target);
+uint_fast32_t searchSumArray16(const uint_least16_t* const restrict array, uint_fast32_t highestIndex, const uint_fast16_t target);
 
 struct IntToString {
     char letters[12];

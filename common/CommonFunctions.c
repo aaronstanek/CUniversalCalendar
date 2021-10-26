@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-uint_fast32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast32_t target) {
+uint_fast32_t searchSumArray32(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast32_t target) {
     uint_fast32_t lowestIndex = 0;
     do {
         const uint_fast32_t middleIndex = (lowestIndex + highestIndex) / 2;
@@ -17,7 +17,7 @@ uint_fast32_t searchSumArrayLong(const uint_least32_t* const restrict array, uin
     return (target >= array[highestIndex]) ? highestIndex : lowestIndex;
 }
 
-uint_fast32_t searchSumArrayShort(const uint_least16_t* const restrict array, uint_fast32_t highestIndex, const uint_fast16_t target) {
+uint_fast32_t searchSumArray16(const uint_least16_t* const restrict array, uint_fast32_t highestIndex, const uint_fast16_t target) {
     uint_fast32_t lowestIndex = 0;
     do {
         const uint_fast32_t middleIndex = (lowestIndex + highestIndex) / 2;

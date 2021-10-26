@@ -147,7 +147,7 @@ UniversalCalendarErrorCode GregorianEncode(const struct CalendarCache* const res
         monthOffsetArray = &(cache->jgMonth.totalLeap[0]);
     }
 
-    int month = searchSumArrayShort(monthOffsetArray,11,n);
+    int month = searchSumArray16(monthOffsetArray,11,n);
     int day = n - monthOffsetArray[month];
 
     // now output
