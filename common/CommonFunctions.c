@@ -2,8 +2,6 @@
 #include "ErrorCodes.h"
 
 #include <stdlib.h>
-#include <limits.h>
-#include <string.h>
 
 uint_fast32_t searchSumArrayLong(const uint_least32_t* const restrict array, uint_fast32_t highestIndex, const uint_fast32_t target) {
     uint_fast32_t lowestIndex = 0;
@@ -99,11 +97,7 @@ UniversalCalendarErrorCode DynamicCharArray__constructor(struct DynamicCharArray
     }
 }
 
-UniversalCalendarErrorCode DynamicCharArray__grow(struct DynamicCharArray* const restrict a) {
-    if (a->allocatedSize > INT_MAX-(a->allocatedSize)) {
-        return ERROR_MEMORY;
-    }
-    const int new_allocatedSize = 2 * (a->allocatedSize);
+UniversalCalendarErrorCode DynamicCharArray__grow(struct DynamicCharArray* const restrict a, const int new_allocatedSize) {
     char* const restrict new_data = realloc(a->data,new_allocatedSize);
     if (new_data) {
         a->data = new_data;
@@ -115,9 +109,9 @@ UniversalCalendarErrorCode DynamicCharArray__grow(struct DynamicCharArray* const
     }
 }
 
-UniversalCalendarErrorCode DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char c) {
+UniversalCalendarErrorCode DynamicCharArray__pushChar(struct DynamicCharArray* const restrict a, const char c) {
     if (a->logicalSize == a->allocatedSize) {
-        const UniversalCalendarErrorCode e = DynamicCharArray__grow(a);
+        const UniversalCalendarErrorCode e = DynamicCharArray__grow(a,2*(a->allocatedSize));
         if (e) return e;
     }
     // there is enough space to save another char
@@ -126,33 +120,19 @@ UniversalCalendarErrorCode DynamicCharArray__push(struct DynamicCharArray* const
     return NO_ERROR;
 }
 
-UniversalCalendarErrorCode DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c) {
-    // c must be a null-terminated array
-    for (int i = 0; 1; ++i) {
-        const char elem = c[i];
-        if (elem) {
-            const UniversalCalendarErrorCode e = DynamicCharArray__push(a,elem);
-            if (e) return e;
-        }
-        else {
-            return NO_ERROR;
-        }
-    }
-}
-
-UniversalCalendarErrorCode DynamicCharArray__pushInteger(struct DynamicCharArray* const restrict a, const int_fast32_t number) {
-    struct IntToString intAsString;
-    {
-        const UniversalCalendarErrorCode e = IntToString__constructor(&intAsString,number);
+UniversalCalendarErrorCode DynamicCharArray__pushArrayWithSize(struct DynamicCharArray* const restrict a, const char* const restrict c, const int len) {
+    const int new_logicalSize = a->logicalSize + len;
+    if (new_logicalSize > a->allocatedSize) {
+        // we need to grow the array
+        int new_allocatedSize = a->allocatedSize;
+        do {
+            new_allocatedSize *= 2;
+        } while (new_logicalSize > new_allocatedSize);
+        const UniversalCalendarErrorCode e = DynamicCharArray__grow(a,new_allocatedSize);
         if (e) return e;
     }
-    return DynamicCharArray__pushArray(a,&(intAsString.letters[0]));
-}
-
-UniversalCalendarErrorCode DynamicCharArray__pushIntegerChar(struct DynamicCharArray* const restrict a, const int_fast32_t number, const char c) {
-    {
-        const UniversalCalendarErrorCode e = DynamicCharArray__pushInteger(a,number);
-        if (e) return e;
-    }
-    return DynamicCharArray__push(a,c);
+    // there is enough space to copy the array
+    memcpy(&(a->data[a->logicalSize]),c,len);
+    a->logicalSize = new_logicalSize;
+    return NO_ERROR;
 }

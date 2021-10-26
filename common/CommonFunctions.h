@@ -4,6 +4,7 @@
 #include "ErrorType.h"
 
 #include <stdint.h>
+#include <string.h>
 
 inline int_fast32_t modulus(int_fast32_t a, const int_fast32_t b) {
     // C defines a % b as a - (a/b)*b.
@@ -53,12 +54,30 @@ struct DynamicCharArray {
 
 UniversalCalendarErrorCode DynamicCharArray__constructor(struct DynamicCharArray* const restrict a);
 
-UniversalCalendarErrorCode DynamicCharArray__push(struct DynamicCharArray* const restrict a, const char c);
+UniversalCalendarErrorCode DynamicCharArray__pushChar(struct DynamicCharArray* const restrict a, const char c);
 
-UniversalCalendarErrorCode DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c);
+UniversalCalendarErrorCode DynamicCharArray__pushArrayWithSize(struct DynamicCharArray* const restrict a, const char* const restrict c, const int len);
 
-UniversalCalendarErrorCode DynamicCharArray__pushInteger(struct DynamicCharArray* const restrict a, const int_fast32_t number);
+inline UniversalCalendarErrorCode DynamicCharArray__pushArray(struct DynamicCharArray* const restrict a, const char* const restrict c) {
+    // c must be a null terminated array
+    return DynamicCharArray__pushArrayWithSize(a,c,strlen(c));
+}
 
-UniversalCalendarErrorCode DynamicCharArray__pushIntegerChar(struct DynamicCharArray* const restrict a, const int_fast32_t number, const char c);
+inline UniversalCalendarErrorCode DynamicCharArray__pushInteger(struct DynamicCharArray* const restrict a, const int_fast32_t number) {
+    struct IntToString intAsString;
+    {
+        const UniversalCalendarErrorCode e = IntToString__constructor(&intAsString,number);
+        if (e) return e;
+    }
+    return DynamicCharArray__pushArray(a,&(intAsString.letters[0]));
+}
+
+inline UniversalCalendarErrorCode DynamicCharArray__pushIntegerChar(struct DynamicCharArray* const restrict a, const int_fast32_t number, const char c) {
+    {
+        const UniversalCalendarErrorCode e = DynamicCharArray__pushInteger(a,number);
+        if (e) return e;
+    }
+    return DynamicCharArray__pushChar(a,c);
+}
 
 #endif

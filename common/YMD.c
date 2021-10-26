@@ -21,7 +21,7 @@ UniversalCalendarErrorCode YMD__toString(const struct YMD* const restrict ymd, c
         free(string.data);
         return e;
     }
-    e = DynamicCharArray__push(&string,'(');
+    e = DynamicCharArray__pushChar(&string,'(');
     if (e) {
         free(string.data);
         return e;
@@ -41,7 +41,7 @@ UniversalCalendarErrorCode YMD__toString(const struct YMD* const restrict ymd, c
         free(string.data);
         return e;
     }
-    e = DynamicCharArray__push(&string,0);
+    e = DynamicCharArray__pushChar(&string,0);
     if (e) {
         free(string.data);
         return e;
